@@ -15,7 +15,9 @@ export async function action({ request, params }) {
         image: data.get('image'),
         date: data.get('date'),
         description: data.get('description'),
-    }
+    };
+
+
     
 
     const response = await fetch('http://localhost:8080/events', {
@@ -25,11 +27,16 @@ export async function action({ request, params }) {
             'Content-Type': 'application/json'
         }
     });
+
+    if (response.status === 422) {
+        return response;
+    }
     if (!response.ok) {
         throw new Response(JSON.stringify({ message: 'Could not fetch events.' }), {
       status: 500,
     });
-  } else {
+  } 
+  else {
     return redirect('/events');
     }
 }
